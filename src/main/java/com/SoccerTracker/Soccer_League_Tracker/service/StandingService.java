@@ -33,15 +33,15 @@ Alphabetical team name
 @Service
 public class StandingService {
 
-    private final MatchRepository matchRepository;
     private final TeamRepository teamRepository;
+    private final MatchRepository matchRepository;
 
     public StandingService(
-            MatchRepository matchRepository,
-            TeamRepository teamRepository) {
+            TeamRepository teamRepository,
+            MatchRepository matchRepository) {
 
-        this.matchRepository = matchRepository;
         this.teamRepository = teamRepository;
+        this.matchRepository = matchRepository;
     }
 
     public List<Standing> getStandings() {
@@ -49,25 +49,25 @@ public class StandingService {
         List<Team> teams = teamRepository.findAll();
         List<Match> matches = matchRepository.findAll();
 
-        Map<String, Standing> standingsMap = new HashMap<>();
+        Map<String, Standing> standingMap = new HashMap<>();
 
-        // Add every team to the standings, even if it has not played.
+        // Add every registered team with zero statistics.
         for (Team team : teams) {
-            standingsMap.put(
+            standingMap.put(
                     team.getName(),
                     new Standing(team.getName())
             );
         }
 
-        // Calculate statistics from every match.
+        // Calculate standings from all saved matches.
         for (Match match : matches) {
 
-            Standing homeStanding = standingsMap.computeIfAbsent(
+            Standing homeStanding = standingMap.computeIfAbsent(
                     match.getHomeTeam(),
                     Standing::new
             );
 
-            Standing awayStanding = standingsMap.computeIfAbsent(
+            Standing awayStanding = standingMap.computeIfAbsent(
                     match.getAwayTeam(),
                     Standing::new
             );
@@ -83,7 +83,8 @@ public class StandingService {
             );
         }
 
-        List<Standing> standings = new ArrayList<>(standingsMap.values());
+        List<Standing> standings =
+                new ArrayList<>(standingMap.values());
 
         standings.sort(
                 Comparator.comparingInt(Standing::getPoints)
@@ -98,7 +99,7 @@ public class StandingService {
                                         Standing::getGoalsFor
                                 ).reversed()
                         )
-                        .thenComparing(Standing::getTeamName)
+                        .thenComparing(Standing::getTeam)
         );
 
         return standings;
