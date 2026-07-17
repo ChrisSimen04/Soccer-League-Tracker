@@ -1,106 +1,71 @@
 package com.SoccerTracker.Soccer_League_Tracker.model;
 
 public class Standing {
-	private String team;
-	private int matchesPlayed;
-	private int wins;
-	private int losses;
-	private int draws;
-	private int goalsFor;
-	private int goalsAgainst;
-	private int goalDifference;
-	private int Points;
-	
-	public Standing() {}
 
-	public Standing(String team, int matchesPlayed, int wins, int losses, int draws, int goalsFor, int goalsAgainst,
-			int goalDifference, int points) {
-		super();
-		this.team = team;
-		this.matchesPlayed = matchesPlayed;
-		this.wins = wins;
-		this.losses = losses;
-		this.draws = draws;
-		this.goalsFor = goalsFor;
-		this.goalsAgainst = goalsAgainst;
-		this.goalDifference = goalDifference;
-		Points = points;
-	}
+    private String teamName;
+    private int played;
+    private int wins;
+    private int draws;
+    private int losses;
+    private int goalsFor;
+    private int goalsAgainst;
+    private int goalDifference;
+    private int points;
 
-	public String getTeam() {
-		return team;
-	}
+    public Standing(String teamName) {
+        this.teamName = teamName;
+    }
 
-	public void setTeam(String team) {
-		this.team = team;
-	}
+    public void recordMatch(int goalsScored, int goalsAllowed) {
+        played++;
+        goalsFor += goalsScored;
+        goalsAgainst += goalsAllowed;
+        goalDifference = goalsFor - goalsAgainst;
 
-	public int getMatchesPlayed() {
-		return matchesPlayed;
-	}
+        if (goalsScored > goalsAllowed) {
+            wins++;
+            points += 3;
+        } else if (goalsScored == goalsAllowed) {
+            draws++;
+            points += 1;
+        } else {
+            losses++;
+        }
+    }
 
-	public void setMatchesPlayed(int matchesPlayed) {
-		this.matchesPlayed = matchesPlayed;
-	}
+    public String getTeamName() {
+        return teamName;
+    }
 
-	public int getWins() {
-		return wins;
-	}
+    public int getPlayed() {
+        return played;
+    }
 
-	public void setWins(int wins) {
-		this.wins = wins;
-	}
+    public int getWins() {
+        return wins;
+    }
 
-	public int getLosses() {
-		return losses;
-	}
+    public int getDraws() {
+        return draws;
+    }
 
-	public void setLosses(int losses) {
-		this.losses = losses;
-	}
+    public int getLosses() {
+        return losses;
+    }
 
-	public int getDraws() {
-		return draws;
-	}
+    public int getGoalsFor() {
+        return goalsFor;
+    }
 
-	public void setDraws(int draws) {
-		this.draws = draws;
-	}
+    public int getGoalsAgainst() {
+        return goalsAgainst;
+    }
 
-	public int getGoalsFor() {
-		return goalsFor;
-	}
+    public int getGoalDifference() {
+        return goalDifference;
+    }
 
-	public void setGoalsFor(int goalsFor) {
-		this.goalsFor = goalsFor;
-	}
-
-	public int getGoalsAgainst() {
-		return goalsAgainst;
-	}
-
-	public void setGoalsAgainst(int goalsAgainst) {
-		this.goalsAgainst = goalsAgainst;
-	}
-
-	public int getGoalDifference() {
-		return goalDifference;
-	}
-
-	public void setGoalDifference(int goalDifference) {
-		this.goalDifference = goalDifference;
-	}
-
-	public int getPoints() {
-		return Points;
-	}
-
-	public void setPoints(int points) {
-		Points = points;
-	}
-
-	
-	
-	
-
+    public int getPoints() {
+        return points;
+    }
 }
